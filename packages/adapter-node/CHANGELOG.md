@@ -1,5 +1,19 @@
 # @vgpu/adapter-node
 
+## 0.5.0
+
+### Minor Changes
+
+- 588a94e: Default Node/Linux rendering to Vulkan, avoiding Dawn's restricted-mip-view/storage-write defect in OpenGL. macOS, Windows and browser defaults are unchanged; no Dawn update or native patch is required.
+
+  [Migration guide](https://github.com/vercel-labs/vgpu/blob/v0.5.0/docs/migrations/0.5.0.docs.md).
+
+### Patch Changes
+
+- Updated dependencies [588a94e]
+- Updated dependencies [632a908]
+  - @vgpu/core@0.5.0
+
 ## 0.5.0-rc.1
 
 ### Patch Changes

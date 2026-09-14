@@ -1,5 +1,73 @@
 # vgpu
 
+## 0.5.0
+
+### Minor Changes
+
+- 588a94e: Unify texture creation around explicit shapes and usage, immutable allocations and explicit mip/region readback. Remove Texture.resize() and Target/Surface read delegates; improve replacement and resource lifetime validation.
+
+  [Migration guide](https://github.com/vercel-labs/vgpu/blob/v0.5.0/docs/migrations/0.5.0.docs.md).
+
+- 632a908: Add public `vgpu native doctor`, `check`, `build`, and `verify` command routing and
+  guides for generating self-contained Swift/Metal shader packages. Commands load
+  the optional companion lazily; help does not require it or a native toolchain.
+  The optional `@vgpu/native` companion is published as a beta in this release;
+  its platform and distribution qualifications remain unchanged from rc.1.
+
+  Expose captured WGSL source graphs and authored entry-point declaration spans for
+  consistent build-time validation and generation. Imports are resolved once per
+  captured graph, and snapshot resolution retains the captured source and edges.
+
+  Breaking changes for this pre-1.0 minor: reflected host-shareable layouts now use
+  intrinsic WGSL alignment and size, with `layoutMode: "wgsl-host-shareable-v1"`.
+  Read address space from the binding, not the removed
+  `HostShareableLayout.addressSpace` field. Code relying on the previous
+  `"naga-standard"` mode or padded uniform layout sizes must migrate.
+
+  JavaScript-owned binding values now require the reflected shape, exact component
+  counts, and in-range integers instead of silent coercion, truncation, or filling.
+  Invalid values produce `VGPU-SET-VALUE-INVALID` with structured reason/path and
+  expected/actual details. Binding ownership and stored values are retained when
+  candidate validation fails; this is a per-candidate guarantee, not an atomic
+  transaction across `set({ a, b })` or a rollback of arbitrary GPU errors. Shared
+  uniform updates preserve the previous accepted value on validation failure, and
+  half-float packing uses round-to-nearest, ties-to-even.
+
+  Migrate the rendered examples' initial uniform values to the strict contract:
+  provide every reflected member, including explicit shader padding, and use
+  actual render-target dimensions for initial resolution and bloom texel size.
+  Retain partial updates for animation and resizing without resetting their state.
+
+  The strict binding checks and candidate handling add approximately 1.4 KB gzip to
+  the measured full client entry; `init-only` is unchanged. The changed WGSL runtime
+  modules add approximately 2.8 KB gzip to the tooling entry. Captured-graph modules
+  are absent from the measured browser entries. Only the six affected package
+  bundle ceilings are updated to the existing 512-byte convention;
+  audiences, growth thresholds, and unrelated ceilings are unchanged.
+
+  [Migration guide](https://github.com/vercel-labs/vgpu/blob/v0.5.0/docs/migrations/0.5.0.docs.md).
+
+### Patch Changes
+
+- d163bad: Publish the optional `@vgpu/native` companion as a beta for generating self-contained
+  Swift/Metal shader packages through `vgpu native doctor`, `check`, `build`, and `verify`.
+  Bundle the pinned, hash-authenticated Tint worker, compiler schemas, C helpers and
+  third-party license notices. Installation does not compile or download Tint.
+  Expose only the internal `@vgpu/native/cli` protocol consumed by the vgpu CLI; the
+  low-level TypeScript generator is not a supported public API.
+
+  [Migration guide](https://github.com/vercel-labs/vgpu/blob/v0.5.0/docs/migrations/0.5.0.docs.md).
+
+- 5c18170: Bundle versioned consumer migration guides in the local docs CLI and MCP corpus. Discover them with `vgpu docs ls /migrations` and read a guide with `vgpu docs cat /migrations/0.5.0.docs.md`. Collect migration instructions from changesets during release preparation instead of relying on standalone repository files.
+- Updated dependencies [588a94e]
+- Updated dependencies [588a94e]
+- Updated dependencies [632a908]
+  - @vgpu/core@0.5.0
+  - @vgpu/adapter-node@0.5.0
+  - @vgpu/wgsl@0.5.0
+  - @vgpu/adapter-mock@0.5.0
+  - @vgpu/wgsl-std@0.5.0
+
 ## 0.5.0-rc.1
 
 ### Minor Changes

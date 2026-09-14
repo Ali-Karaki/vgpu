@@ -1,5 +1,19 @@
 # @vgpu/render
 
+## 0.5.0
+
+### Minor Changes
+
+- 588a94e: Unify texture creation around explicit shapes and usage, immutable allocations and explicit mip/region readback. Remove Texture.resize() and Target/Surface read delegates; improve replacement and resource lifetime validation.
+
+  [Migration guide](https://github.com/vercel-labs/vgpu/blob/v0.5.0/docs/migrations/0.5.0.docs.md).
+
+### Patch Changes
+
+- Updated dependencies [588a94e]
+- Updated dependencies [632a908]
+  - @vgpu/core@0.5.0
+
 ## 0.5.0-rc.1
 
 ### Patch Changes
