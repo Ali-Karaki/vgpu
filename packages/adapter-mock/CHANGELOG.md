@@ -1,5 +1,13 @@
 # @vgpu/adapter-mock
 
+## 0.5.0
+
+### Patch Changes
+
+- Updated dependencies [588a94e]
+- Updated dependencies [632a908]
+  - @vgpu/core@0.5.0
+
 ## 0.5.0-rc.1
 
 ### Patch Changes
