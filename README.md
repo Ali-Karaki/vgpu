@@ -5,9 +5,8 @@
   <a href="https://www.npmjs.com/package/vgpu"><img alt="npm version: vgpu" src="https://img.shields.io/npm/v/vgpu.svg?style=for-the-badge&amp;labelColor=000000" height="28"></a>
   <a href="https://github.com/vercel-labs/vgpu/blob/canary/LICENSE"><img alt="License: MIT" src="https://img.shields.io/github/license/vercel-labs/vgpu.svg?style=for-the-badge&amp;labelColor=000000" height="28"></a>
   <a href="https://www.npmjs.com/package/vgpu"><img alt="npm downloads per month: vgpu" src="https://img.shields.io/npm/dm/vgpu.svg?style=for-the-badge&amp;labelColor=000000&amp;label=npm%20downloads" height="28"></a>
+  <a href="https://github.com/vercel-labs/vgpu/actions/workflows/ci.yml"><img alt="CI status" src="https://img.shields.io/github/actions/workflow/status/vercel-labs/vgpu/ci.yml?branch=canary&amp;style=for-the-badge&amp;labelColor=000000&amp;label=CI&amp;logo=github" height="28"></a>
 </p>
-
-[![CI](https://github.com/vercel-labs/vgpu/actions/workflows/ci.yml/badge.svg)](https://github.com/vercel-labs/vgpu/actions/workflows/ci.yml)
 
 vgpu is a TypeScript library for WebGPU: typed shader imports, a tiny gpu-first API, and the same code running in the browser, headless Node, and your test suite.
 
