@@ -71,11 +71,13 @@ fn fs_main(@location(0) uv: vec2f) -> @location(0) vec4f {
   var color = vec3f(0.062, 0.068, 0.078) + 0.008 * (0.9 - p.y) + noise * 0.013;
   color += light * (vec3f(0.07) + tint * 0.09);
 
-  let top = vec2f(0, -0.48);
-  let left = vec2f(-0.45, 0.25);
-  let rightCorner = vec2f(0.45, 0.25);
+  let halfWidth = 0.38;
+  let triangleHeight = halfWidth * sqrt(3.0);
+  let top = vec2f(0, -triangleHeight * (2.0 / 3.0));
+  let left = vec2f(-halfWidth, triangleHeight / 3.0);
+  let rightCorner = vec2f(halfWidth, triangleHeight / 3.0);
   let triangleDistance = min(segment(p, top, left), min(segment(p, left, rightCorner), segment(p, rightCorner, top)));
-  let inside = step(abs(p.x) * (0.73 / 0.45), p.y + 0.48) * step(p.y, 0.25);
+  let inside = step(abs(p.x) * sqrt(3.0), p.y - top.y) * step(p.y, left.y);
 
   // Fine, warped contour lines appear in the light. Outside the triangle they fade quickly.
   let q = p - vec2f(0.13, 0.08);
