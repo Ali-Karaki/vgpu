@@ -26,14 +26,19 @@ export function createRenderer(canvas: HTMLCanvasElement) {
     let active = false;
     let pointerX = 0;
     let pointerY = 0;
-    let tiltX = 0.12;
-    let tiltY = -0.08;
+    let tiltX = 0;
+    let tiltY = 0;
+    let hover = 0;
+    let lightX = 0.2;
+    let lightY = -0.25;
     const move = (event: PointerEvent) => {
       if (!event.isPrimary) return;
       const rect = canvas.getBoundingClientRect();
-      pointerX = Math.max(-1, Math.min(1, (event.clientX - rect.left) / Math.max(1, rect.width) * 2 - 1));
-      pointerY = Math.max(-1, Math.min(1, (event.clientY - rect.top) / Math.max(1, rect.height) * 2 - 1));
-      active = true;
+      const scale = Math.min(rect.height, rect.width * 1.35);
+      // Match the shader's card coordinates, so the surrounding backdrop stays inert.
+      pointerX = ((event.clientX - rect.left) - rect.width / 2) / Math.max(1, scale) * 2.5 / 0.64;
+      pointerY = ((event.clientY - rect.top) - rect.height / 2) / Math.max(1, scale) * 2.5 / 0.91;
+      active = Math.abs(pointerX) <= 1 && Math.abs(pointerY) <= 1;
     };
     const leave = () => { active = false; };
     const up = (event: PointerEvent) => { if (event.pointerType !== 'mouse') leave(); };
@@ -56,14 +61,17 @@ export function createRenderer(canvas: HTMLCanvasElement) {
 
     const time = clock(context);
     frameLoop(context, (currentFrame) => {
-      const idleX = 0.12 + Math.sin(time.time * 0.55) * 0.12;
-      const idleY = -0.08 + Math.sin(time.time * 0.4) * 0.08;
-      const targetX = motion.matches ? 0.12 : active ? pointerX * 0.42 : idleX;
-      const targetY = motion.matches ? -0.08 : active ? -pointerY * 0.32 : idleY;
-      const blend = 1 - Math.exp(-8 * Math.min(time.deltaTime, 0.1));
+      const targetX = motion.matches || !active ? 0 : pointerX * 0.16;
+      const targetY = motion.matches || !active ? 0 : -pointerY * 0.12;
+      const blend = motion.matches ? 1 : 1 - Math.exp(-10 * Math.min(time.deltaTime, 0.1));
       tiltX += (targetX - tiltX) * blend;
       tiltY += (targetY - tiltY) * blend;
-      shader.set({ params: { tilt: [tiltX, tiltY] } });
+      hover += ((active ? 1 : 0) - hover) * blend;
+      if (active) {
+        lightX += (pointerX - lightX) * blend;
+        lightY += (pointerY - lightY) * blend;
+      }
+      shader.set({ params: { tilt: [tiltX, tiltY], pointer: [lightX, lightY], hover } });
       currentFrame.pass(output, shader);
     }, { fps: 60 });
   })().catch((error: unknown) => {

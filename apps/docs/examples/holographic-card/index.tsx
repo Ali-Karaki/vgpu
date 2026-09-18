@@ -21,10 +21,10 @@ export function Example() {
   }, []);
 
   return (
-    <div className="relative h-full w-full overflow-hidden bg-[#090b10]">
-      <canvas ref={canvasRef} className="block h-full w-full touch-none" aria-label="Holographic foil card. Move your pointer or drag to tilt the card and shift its rainbow reflections." />
-      <p className="pointer-events-none absolute inset-x-0 bottom-5 text-center font-mono text-[10px] tracking-[0.2em] text-white/45">
-        {error ? 'This example requires a WebGPU-capable browser.' : 'HOLOGRAPHIC CARD · MOVE TO EXPLORE'}
+    <div className="relative h-full w-full overflow-hidden bg-[#090a0c]">
+      <canvas ref={canvasRef} className="block h-full w-full touch-none" aria-label="vgpu. Holographic. Light, computed. Edition 001. WebGPU. A graphite card with a visible triangle outline; hover or drag to reveal its holographic engraving." />
+      <p className="pointer-events-none absolute inset-x-0 bottom-5 text-center font-mono text-[10px] tracking-[0.2em] text-white/35">
+        {error ? 'This example requires a WebGPU-capable browser.' : 'MOVE TO REVEAL'}
       </p>
     </div>
   );

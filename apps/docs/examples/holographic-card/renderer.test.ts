@@ -71,13 +71,19 @@ test('input changes the foil angle, reduced motion stays fixed, and disposal rem
   expect(shader.compile).toHaveBeenCalledWith({ colors: ['bgra8unorm'] });
   const tick = mocks.frameLoop.mock.calls[0]![1];
   const pass = vi.fn();
-  const pointer = Object.assign(new Event('pointermove'), { isPrimary: true, clientX: 310, clientY: 20 });
+  const pointer = Object.assign(new Event('pointermove'), { isPrimary: true, clientX: 210, clientY: 200 });
   canvas.dispatchEvent(pointer);
   tick({ pass });
   const tilt = shader.set.mock.lastCall![0].params.tilt;
-  expect(tilt[0]).toBeGreaterThan(0.12);
-  expect(tilt[1]).toBeGreaterThan(-0.08);
+  expect(tilt[0]).toBeGreaterThan(0);
+  expect(tilt[1]).toBeGreaterThan(0);
+  expect(shader.set.mock.lastCall![0].params.hover).toBeGreaterThan(0);
   expect(pass).toHaveBeenCalledOnce();
+  // Leaving the card, even while still over the canvas, must fade the reveal out.
+  const beforeLeave = shader.set.mock.lastCall![0].params.hover;
+  canvas.dispatchEvent(Object.assign(new Event('pointermove'), { isPrimary: true, clientX: 10, clientY: 20 }));
+  tick({ pass });
+  expect(shader.set.mock.lastCall![0].params.hover).toBeLessThan(beforeLeave);
   renderer.dispose();
   renderer.dispose();
   expect(remove).toHaveBeenCalledTimes(5);
@@ -89,6 +95,6 @@ test('input changes the foil angle, reduced motion stays fixed, and disposal rem
   await reduced.ready;
   canvas.dispatchEvent(pointer);
   mocks.frameLoop.mock.lastCall![1]({ pass });
-  expect(shader.set.mock.lastCall![0].params.tilt).toEqual([0.12, -0.08]);
+  expect(shader.set.mock.lastCall![0].params.tilt).toEqual([0, 0]);
   reduced.dispose();
 });
