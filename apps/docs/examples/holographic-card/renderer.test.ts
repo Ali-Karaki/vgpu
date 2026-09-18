@@ -79,9 +79,9 @@ test('input changes the foil angle, reduced motion stays fixed, and disposal rem
   expect(tilt[1]).toBeGreaterThan(0);
   expect(shader.set.mock.lastCall![0].params.hover).toBeGreaterThan(0);
   expect(pass).toHaveBeenCalledOnce();
-  // Leaving the card, even while still over the canvas, must fade the reveal out.
+  // Leaving the canvas fades the reveal.
   const beforeLeave = shader.set.mock.lastCall![0].params.hover;
-  canvas.dispatchEvent(Object.assign(new Event('pointermove'), { isPrimary: true, clientX: 10, clientY: 20 }));
+  canvas.dispatchEvent(new Event('pointerleave'));
   tick({ pass });
   expect(shader.set.mock.lastCall![0].params.hover).toBeLessThan(beforeLeave);
   renderer.dispose();
@@ -97,4 +97,36 @@ test('input changes the foil angle, reduced motion stays fixed, and disposal rem
   mocks.frameLoop.mock.lastCall![1]({ pass });
   expect(shader.set.mock.lastCall![0].params.tilt).toEqual([0, 0]);
   reduced.dispose();
+});
+
+test('light reveals on approach and preserves its reach relative to the resized card', async () => {
+  const { canvas, shader, motion } = setup();
+  motion.matches = true;
+  const renderer = createRenderer(canvas);
+  await renderer.ready;
+  const tick = mocks.frameLoop.mock.calls[0]![1];
+  const move = (clientX: number, clientY: number) => {
+    canvas.dispatchEvent(Object.assign(new Event('pointermove'), { isPrimary: true, clientX, clientY }));
+    tick({ pass: vi.fn() });
+    return shader.set.mock.lastCall![0].params.hover;
+  };
+  // The card's right edge is around x=264; both positions are on the backdrop.
+  const approaching = move(305, 270);
+  const nearEdge = move(280, 270);
+  expect(approaching).toBeGreaterThan(0);
+  expect(nearEdge).toBeGreaterThan(approaching);
+  expect(nearEdge).toBeLessThan(1);
+  expect(move(160, 270)).toBe(1);
+  // Doubling the canvas and pointer offset preserves the same relative reveal.
+  canvas.getBoundingClientRect = () => ({ left: 10, top: 20, width: 600, height: 1000 }) as DOMRect;
+  expect(move(600, 520)).toBeCloseTo(approaching);
+  // In a wide canvas, the 256px card ends at x=738; reveal starts 256px beyond it.
+  canvas.getBoundingClientRect = () => ({ left: 10, top: 20, width: 1200, height: 500 }) as DOMRect;
+  expect(move(1000, 270)).toBe(0);
+  expect(move(980, 270)).toBeGreaterThan(0);
+  expect(move(866, 270)).toBeCloseTo(0.5);
+  canvas.dispatchEvent(new Event('pointerleave'));
+  tick({ pass: vi.fn() });
+  expect(shader.set.mock.lastCall![0].params.hover).toBe(0);
+  renderer.dispose();
 });
