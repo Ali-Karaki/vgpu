@@ -62,7 +62,8 @@ fn fs_main(@location(0) uv: vec2f) -> @location(0) vec4f {
   let hover = clamp(params.hover, 0.0, 1.0);
   let lightCenter = params.pointer * vec2f(0.64, 0.91);
   let delta = p - lightCenter;
-  let lightBand = exp(-pow((delta.x * 0.72 + delta.y * 0.52) / 0.25, 2.0));
+  let bandDistance = (delta.x * 0.72 + delta.y * 0.52) / 0.25;
+  let lightBand = exp(-bandDistance * bandDistance);
   let spotlight = exp(-dot(delta * vec2f(1.05, 0.72), delta * vec2f(1.05, 0.72)) * 2.6);
   let light = lightBand * spotlight * hover;
   let phase = p.x * 0.55 + p.y * 0.32 + dot(params.tilt, vec2f(1.1, 0.8));
