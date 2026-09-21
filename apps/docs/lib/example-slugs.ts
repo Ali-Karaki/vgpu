@@ -18,6 +18,7 @@ export const exampleSlugs = [
   'transmission',
   'clipping',
   'matcap',
+  'video-to-texture',
   'radiance-cascades',
   'agent-radiance-cascades',
   'nextjs-flare',

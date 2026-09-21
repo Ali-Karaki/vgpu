@@ -26,6 +26,7 @@
   "select-control",
   "storage-buffers",
   "textures",
+  "video-input",
   "webgpu",
   "zero-copy"
 ]

@@ -27,6 +27,7 @@ export const exampleComponentLoaders = {
   transmission: () => import('../examples/transmission/index'),
   clipping: () => import('../examples/clipping/index'),
   matcap: () => import('../examples/matcap/index'),
+  'video-to-texture': () => import('../examples/video-to-texture/index'),
   'radiance-cascades': () => import('../examples/radiance-cascades/index'),
   'agent-radiance-cascades': () => import('../examples/agent-radiance-cascades/index'),
   'nextjs-flare': () => import('../examples/nextjs-flare/index'),

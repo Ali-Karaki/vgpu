@@ -5,6 +5,7 @@
   "$comment:tsl-exports": "The focused tslExports route is 239570 B gzip: a 238179 B shared Three/TSL/WebGPURenderer chunk plus 1391 B of route-owned example code. Renaming the route shortened both the adapter and former-local-helper builds by 4 B, so the same-build control remains a 2285 B adapter delta. Keep this route intentionally small even though the framework it demonstrates dominates its transfer size.",
   "$comment:glass-sculpture": "Measured at 72804 B gzip from the current canary production build on Node 22.21.1; the external proposal's provisional 78000 B value was not carried forward.",
   "$comment:matcap": "Measured at 70640 B gzip from the current canary production build on Node 22.21.1 / Next 16.3.3 after the reviewed lifecycle and vertex-shading refinements.",
+  "$comment:video-to-texture": "Measured at 68829 B gzip from the current canary production build on Node 22.21.1 / Next 16.3.3 after lifecycle, media-provenance, and current texture-API integration.",
   "sharedHost": {
     "gzipBytes": 2104,
     "maxGrowthBytes": 5120
@@ -28,6 +29,7 @@
     "transmission": 82335,
     "clipping": 64856,
     "matcap": 70640,
+    "video-to-texture": 68829,
     "radiance-cascades": 73313,
     "agent-radiance-cascades": 72305,
     "nextjs-flare": 80616,
