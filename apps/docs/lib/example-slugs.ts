@@ -17,6 +17,7 @@ export const exampleSlugs = [
   'environment-map',
   'transmission',
   'clipping',
+  'matcap',
   'radiance-cascades',
   'agent-radiance-cascades',
   'nextjs-flare',
