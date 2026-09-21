@@ -1,3 +1,5 @@
+// Concept and visual design by Kazuyuki Chinda (@ckazu).
+
 import GUI from 'lil-gui';
 import { clock, frameLoop, init, surface, type Gpu } from 'vgpu';
 import { installPointerInput } from './pointer-input';
